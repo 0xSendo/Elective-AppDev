@@ -20,7 +20,7 @@ const ProfileInput = () => {
   const handleSaveProfile = (e) => {
     e.preventDefault(); 
     localStorage.setItem('userProfile', JSON.stringify(profile));
-    navigate('/home'); 
+    navigate('/home');  // Navigate to home after saving the profile
   };
 
   return (
