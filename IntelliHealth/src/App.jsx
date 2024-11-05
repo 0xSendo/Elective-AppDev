@@ -6,6 +6,8 @@ import HomePage from './assets/Components/HomePage';
 import ProfileInput from './assets/Components/ProfileInput';
 import LandingPage from './assets/Components/LandingPage';
 import HomePage2 from './assets/Components/HomePage2'; // Import HomePage2
+import 'bootstrap/dist/css/bootstrap.min.css';
+import ChallengeManager from './components/ChallengeManager';
 
 const App = () => (
   <Router>
@@ -16,6 +18,7 @@ const App = () => (
       <Route path="/profile" element={<ProfileInput />} />
       <Route path="/home" element={<HomePage />} /> {/* Change here for consistency */}
       <Route path="/home2" element={<HomePage2 />} /> {/* Added route for HomePage2 */}
+      <Route path="/challenge" element={<ChallengeManager />} />
     </Routes>
   </Router>
 );
