@@ -8,6 +8,7 @@ import LandingPage from './assets/Components/LandingPage';
 import HomePage2 from './assets/Components/HomePage2'; // Import HomePage2
 import 'bootstrap/dist/css/bootstrap.min.css';
 import ChallengeManager from './components/ChallengeManager';
+import Progress from './components/Progress';
 
 const App = () => (
   <Router>
@@ -19,6 +20,7 @@ const App = () => (
       <Route path="/home" element={<HomePage />} /> {/* Change here for consistency */}
       <Route path="/home2" element={<HomePage2 />} /> {/* Added route for HomePage2 */}
       <Route path="/challenge" element={<ChallengeManager />} />
+      <Route path="/progress" element={<Progress />} />
     </Routes>
   </Router>
 );
