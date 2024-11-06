@@ -3,7 +3,7 @@ body {
   margin: 0;
   padding: 0;
   font-family: Arial, sans-serif;
-  background-color: #f7f7f7; /* Light background */
+  background-color: #2d4139;
   height: 100vh;
   display: flex;
   justify-content: center;
@@ -14,9 +14,9 @@ body {
 .form-container {
   width: 400px;
   padding: 40px;
-  background-color: #fff; /* White background for the form */
+  background-color: #406455;
   border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 8px rgb(237, 235, 235);
 }
 
 /* Form Content */
@@ -27,21 +27,35 @@ body {
 
 .input-group {
   margin-bottom: 15px;
+
+}
+.input-group select {
+  padding: 12px; /* Add padding for a larger clickable area */
+  font-size: 16px; /* Increase font size */
+  width: 100%; /* Ensure it takes up the full width of the container */
+  border: solid #ccc;
+  border-radius: 4px;
+  color:#676262;
+  background-color: #000000;
+  transition: border-color 0.3s ease
 }
 
 input {
   width: 100%;
   padding: 10px;
-  border: 1px solid #ccc; /* Light gray border */
+  border: 1px solid #ccc;
   border-radius: 5px;
   font-size: 16px;
+  background-color: #000000;
+  color: #ffffff;
+
 }
 
 button {
   width: 100%;
   padding: 10px;
-  background-color: #111111; /* Dark button background */
-  color: #f2f2f2; /* Light text color */
+  background-color: #fbf5f5;
+  color: rgb(0, 0, 0);
   border: none;
   border-radius: 5px;
   cursor: pointer;
@@ -50,7 +64,7 @@ button {
 }
 
 button:hover {
-  background-color: #333333; /* Darker gray on hover */
+  background-color: #89d8c6;
 }
 
 .signup-link {
@@ -59,10 +73,33 @@ button:hover {
 }
 
 .signup-link a {
-  color: #ccff00; /* Bright yellow for links */
+  color: #45b2d6;
   text-decoration: none;
 }
 
 .signup-link a:hover {
   text-decoration: underline;
+}
+
+h1 {
+  width: 100%;
+  padding: 10px;
+  font-size:50px;
+  color: #ffffff;
+  background-color: #263226;
+  text-align: center;
+  
+
+}
+h2 {
+  width: 100%;
+  padding: 10px;
+  font-size:40px;
+  color: #fcfffb;
+  background-color: #263226;
+  text-align: center;
+}
+p {
+  font-size:20px;
+  color: #ffffff;
 }
