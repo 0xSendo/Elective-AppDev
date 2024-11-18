@@ -41,11 +41,11 @@ const HomePage = () => {
   };
 
   return (
-    <div style={{ textAlign: 'center', marginTop: '50px' }}>
-      {/* <h1>Welcome, {user.name}!</h1>
-      <p>Email: {user.email}</p> */}
+    <div style={styles.container}>
+      <h1 style={styles.welcomeText}>Welcome, {user.name}!</h1>
+      <p>Email: {user.email}</p>
       <h2>Your Profile</h2>
-      <div>
+      <div style={styles.profileDetail}>
         <span>Fitness Level: </span>
         {editMode ? (
           <input
@@ -53,12 +53,13 @@ const HomePage = () => {
             name="fitnessLevel"
             value={profile.fitnessLevel}
             onChange={handleChange}
+            style={styles.input}
           />
         ) : (
           <span>{profile.fitnessLevel || 'Not set'}</span>
         )}
       </div>
-      <div>
+      <div style={styles.profileDetail}>
         <span>Gender: </span>
         {editMode ? (
           <input
@@ -66,12 +67,13 @@ const HomePage = () => {
             name="gender"
             value={profile.gender}
             onChange={handleChange}
+            style={styles.input}
           />
         ) : (
           <span>{profile.gender || 'Not set'}</span>
         )}
       </div>
-      <div>
+      <div style={styles.profileDetail}>
         <span>Weight: </span>
         {editMode ? (
           <input
@@ -79,12 +81,13 @@ const HomePage = () => {
             name="weight"
             value={profile.weight}
             onChange={handleChange}
+            style={styles.input}
           />
         ) : (
           <span>{profile.weight ? `${profile.weight} kg` : 'Not set'}</span>
         )}
       </div>
-      <div>
+      <div style={styles.profileDetail}>
         <span>Height: </span>
         {editMode ? (
           <input
@@ -92,12 +95,13 @@ const HomePage = () => {
             name="height"
             value={profile.height}
             onChange={handleChange}
+            style={styles.input}
           />
         ) : (
           <span>{profile.height ? `${profile.height} cm` : 'Not set'}</span>
         )}
       </div>
-      <div>
+      <div style={styles.profileDetail}>
         <span>Goal Weight: </span>
         {editMode ? (
           <input
@@ -105,25 +109,71 @@ const HomePage = () => {
             name="goalWeight"
             value={profile.goalWeight}
             onChange={handleChange}
+            style={styles.input}
           />
         ) : (
           <span>{profile.goalWeight ? `${profile.goalWeight} kg` : 'Not set'}</span>
         )}
       </div>
-      <button
-        onClick={editMode ? handleUpdateProfile : handleEditToggle}
-        style={{ fontSize: '12px', padding: '6px 12px', marginTop: '20px' }}
-      >
-        {editMode ? 'Save Profile' : 'Edit Profile'}
-      </button>
-      <button
-        onClick={handleFinish}
-        style={{ fontSize: '12px', padding: '6px 12px', marginTop: '20px', marginLeft: '10px' }}
-      >
-        Finish
-      </button>
+      <div style={styles.buttonContainer}>
+        <button
+          onClick={editMode ? handleUpdateProfile : handleEditToggle}
+          style={styles.button}
+        >
+          {editMode ? 'Save Profile' : 'Edit Profile'}
+        </button>
+        <button
+          onClick={handleFinish}
+          style={{ ...styles.button, marginLeft: '10px' }}
+        >
+          Finish
+        </button>
+      </div>
     </div>
   );
+};
+
+// Simple styles for container and profile section
+const styles = {
+  container: {
+    backgroundColor: '#fff',
+    padding: '20px',
+    borderRadius: '8px',
+    boxShadow: '0 2px 10px rgba(0, 0, 0, 0.1)',
+    maxWidth: '400px',
+    margin: 'auto',
+    textAlign: 'center',
+  },
+  welcomeText: {
+    color: '#1e203b', // Updated color for Welcome text
+  },
+  profileDetail: {
+    margin: '10px 0',
+    fontSize: '16px',
+    color: '#333',
+  },
+  input: {
+    marginLeft: '10px',
+    padding: '5px',
+    border: '1px solid #ddd',
+    borderRadius: '4px',
+    width: '120px',
+  },
+  buttonContainer: {
+    marginTop: '20px',
+    display: 'flex',
+    justifyContent: 'center',
+    gap: '10px',
+  },
+  button: {
+    padding: '8px 15px',
+    fontSize: '14px',
+    backgroundColor: '#4CAF50',
+    color: '#fff',
+    border: 'none',
+    borderRadius: '4px',
+    cursor: 'pointer',
+  },
 };
 
 export default HomePage;
