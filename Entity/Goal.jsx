@@ -90,11 +90,12 @@ const Goal = () => {
       <header className="top-bar">
         <nav className="navbar">
           <div className="logo">
+            {/* Wrap the logo in a Link to navigate to the LandingPage */}
             <Link to="/">
               <img
-                src="https://scontent.xx.fbcdn.net/v/t1.15752-9/462636547_890081249996736_3820895762277585098_n.png"
+                src="https://scontent.xx.fbcdn.net/v/t1.15752-9/462636547_890081249996736_3820895762277585098_n.png?stp=dst-png_s480x480&_nc_cat=110&ccb=1-7&_nc_sid=0024fc&_nc_eui2=AeHgTV-uknlkt8YDdrlpB-DyR8gzgLQE6_RHyDOAtATr9F7ESPDV0fXBtCVHQKu0olaG01TjAWutVkVeV1_41Yh4&_nc_ohc=3O6CFrBVI3wQ7kNvgEDLxrs&_nc_ad=z-m&_nc_cid=0&_nc_zt=23&_nc_ht=scontent.xx&oh=03_Q7cD1QH8KH11rsnCF5BbAxgNhmvQ-j4opweORqwdfmT-pPcg-w&oe=675BB6D6" 
                 alt="Logo"
-                className="logo-image"
+                className="logo-image" 
               />
             </Link>
           </div>
@@ -105,7 +106,7 @@ const Goal = () => {
               onMouseLeave={handleProfileLeave}
             >
               <img
-                src="https://scontent.fmnl13-4.fna.fbcdn.net/v/t39.30808-1/462101278_508801152002813_5193789042383961383_n.jpg"
+                src="https://scontent.fmnl13-4.fna.fbcdn.net/v/t39.30808-1/462101278_508801152002813_5193789042383961383_n.jpg?stp=dst-jpg_s200x200&_nc_cat=102&ccb=1-7&_nc_sid=0ecb9b&_nc_eui2=AeEMMWbT_fCH4rWX5Q_gCcn4bfDM77yYbHZt8MzvvJhsdtps3NIkm5PrrzjJJ6X399eQTIuBFNEPw3ZIA_nJHQc-&_nc_ohc=ssrwUXqYWNAQ7kNvgFXK6uR&_nc_zt=24&_nc_ht=scontent.fmnl13-3.fna&_nc_gid=AkgPdBFT9xLgVbBueSbj20t&oh=00_AYDeD_7ud1R0mDtzNtPDvQdpIaew4ljY78Dq4hqhpNHOEA&oe=673A3E19"
                 alt="profile"
                 className="logo-image"
               />
@@ -132,8 +133,9 @@ const Goal = () => {
             <Link to="/hs"><p>Home</p></Link>
             <Link to="/goal"><p>Goals</p></Link>
             <Link to="/progress"><p>Progress</p></Link>
-            <Link to="/wp"><p>Workout Plan</p></Link>
+            <Link to="/wp"><p>WorkoutPlan</p></Link>
             <Link to="/home2"><p>Exercise</p></Link>
+            <Link to="/recent"><p>Recent <br></br>Activity</p></Link>
           </div>
         </div>
 
@@ -185,20 +187,20 @@ const Goal = () => {
           </div>
 
           {/* List of Goals */}
-          <ul style={styles.goalList}>
-            {goals.map((goal, index) => (
-              <li key={index} style={styles.goalItem}>
-                <div style={styles.goalText}>
-                  <strong>Type:</strong> {goal.type} <br />
-                  <strong>Goal Weight:</strong> {goal.target}<br />
-                  <strong>Deadline:</strong> {goal.deadline}<br />
-                  <strong>Progress:</strong> {goal.progress ? 'Completed' : 'In Progress'}
-                </div>
-                <div>
-                  <button onClick={() => startEdit(index)} style={styles.editButton}>Edit</button>
-                  <button onClick={() => deleteGoal(index)} style={styles.deleteButton}>Delete</button>
-                </div>
-              </li>
+<ul style={styles.goalList}>
+  {goals.map((goal, index) => (
+    <li key={index} style={styles.goalItem}>
+      <div style={styles.goalText}>
+        <strong style={{ color: '#333333' }}>Type:</strong> {goal.type} <br />
+        <strong style={{ color: '#333333' }}>Goal Weight:</strong> {goal.target}<br />
+        <strong style={{ color: '#333333' }}>Deadline:</strong> {goal.deadline}<br />
+        <strong style={{ color: '#333333' }}>Progress:</strong> {goal.progress ? 'Completed' : 'In Progress'}
+      </div>
+      <div>
+        <button onClick={() => startEdit(index)} style={styles.editButton}>Edit</button>
+        <button onClick={() => deleteGoal(index)} style={styles.deleteButton}>Delete</button>
+      </div>
+    </li>
             ))}
           </ul>
         </div>
@@ -217,6 +219,7 @@ const styles = {
     width: '80%', // This makes the width responsive
     height: '500px', // Adjust height here
     margin: '20px auto',
+    color: '#002642'
   },
   formContainer: {
     display: 'flex',
