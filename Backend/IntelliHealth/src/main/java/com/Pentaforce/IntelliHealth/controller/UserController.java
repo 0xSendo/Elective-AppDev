@@ -31,7 +31,7 @@ public class UserController {
     private UserService userService;
 
     // Create a new user
-    @PostMapping
+    @PostMapping("/signUp")
     public ResponseEntity<?> createUser(@RequestBody UserEntity user) {
         try {
             UserEntity createdUser = userService.createProfile(user);
@@ -45,11 +45,10 @@ public class UserController {
     }
 
     // Add this in UserController
-
     @PostMapping("/login")
     public ResponseEntity<?> loginUser(@RequestBody LoginRequest loginRequest) {
         UserEntity user = userService.verifyLogin(loginRequest.getEmail(), loginRequest.getPassword());
-        
+
         if (user != null) {
             Map<String, Object> response = new HashMap<>();
             response.put("userID", user.getUserId());
@@ -62,20 +61,18 @@ public class UserController {
     }
 
     @PutMapping("/profile")
-public ResponseEntity<?> createProfile(@RequestBody UserEntity userEntity) {
-    try {
-        UserEntity updatedProfile = userService.createProfile(userEntity);
-        return ResponseEntity.ok(updatedProfile);
-    } catch (IllegalArgumentException e) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-    } catch (Exception e) {
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An unexpected error occurred.");
+    public ResponseEntity<?> updateProfile(@RequestBody UserEntity userEntity) {
+        try {
+            UserEntity updatedProfile = userService.createProfile(userEntity);
+            return ResponseEntity.ok(updatedProfile);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An unexpected error occurred.");
+        }
     }
-}
 
 
-        
-    
     // Get all users
     @GetMapping
     public ResponseEntity<List<UserEntity>> getAllUsers() {
@@ -94,7 +91,6 @@ public ResponseEntity<?> createProfile(@RequestBody UserEntity userEntity) {
         }
     }
 
-    
     // Update a user
     @PutMapping("/{userID}")
     public ResponseEntity<?> updateUser(@PathVariable Integer userID, @RequestBody UserEntity userDetails) {
@@ -108,7 +104,6 @@ public ResponseEntity<?> createProfile(@RequestBody UserEntity userEntity) {
         }
 
     }
-        
 
     // Delete a user
     @DeleteMapping("/{userID}")
@@ -119,6 +114,5 @@ public ResponseEntity<?> createProfile(@RequestBody UserEntity userEntity) {
         } catch(Exception e){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        
     }
 }
