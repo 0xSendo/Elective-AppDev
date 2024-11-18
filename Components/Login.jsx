@@ -1,62 +1,82 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
 import './Login.css';  
-import axios from 'axios';
 
 const Login = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState('');
 
-  const handleSubmit = async (event) => {
-    event.preventDefault(); // Prevent the default form submission
+
+  const [signInData, setSignInData] = useState({ email: '', password: '' });
+
+  const handleSignInChange = async (e) => {
+    const { name, value } = e.target;
+    setSignInData({ ...signInData, [name]: value });
+  };
+
+
+  const handleSignInSubmit = async (e) => {
+    e.preventDefault();
+    setIsLoading(true);
+    setError('');
+
+    const requestBody = {
+      email: signInData.email.trim().toLowerCase(),
+      password: signInData.password,
+    };
+
     try {
-        const userData = {
-            email: email, // assuming you're capturing this in state
-            password: password, // assuming you're capturing this in state
-        };
-
-        // Make the POST request to the API
-        const response = await axios.post('http://localhost:8080/api/users/login', userData);
-        console.log("Login successful:", response.data);
-        localStorage.setItem('user', JSON.stringify(response.data));
-        navigate('/profile');            // Redirect or handle successful login here
+      const response = await axios.post('http://localhost:8080/api/users/login', requestBody );
+      console.log('Sign-In successful:', response.data);
+      if(response.status === 200){
+        navigate('/profile'); 
+      }
     } catch (error) {
-        if (error.response) {
-            alert("Login failed. Invalid credentials");
-            console.error(error.response.data);
-        } else if (error.request) {
-            console.error("Login failed. No response received from the server:", error.request);
-        } else {
-            console.error("Login failed. Error:", error.message);
-        }
+      if (error.response) {
+        console.error('Error response:', error.response.data);
+        setError(error.response.status === 401 
+          ? 'Sign In failed: Unauthorized. Please check your credentials.' 
+          : 'Sign In Failed: ${error.response.data.message}');
+      } else {
+        console.error('Error:', error.message);
+        setError('Sign In failed.');
+      }
+    } finally {
+      setIsLoading(false);
     }
-};
+  };
 
   return (
     <div className="form-container">
-      <form className="form-content" onSubmit={handleSubmit}>
+      <form className="form-content" onSubmit={handleSignInSubmit}>
         <h2>Login</h2>
         <div className="input-group">
           <input
             type="email"
             placeholder="Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            name='email'
+            value={signInData.email}
+            onChange={handleSignInChange}
             required
           />
-          
         </div>
         <div className="input-group">
           <input
             type="password"
             placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            name='password'
+            value={signInData.password}
+            onChange={handleSignInChange}
             required
           />
         </div>
         <button type="submit">Login</button>
+        <p style={{color:'red', marginTop:'10px', display:'flex', justifyContent:'center', alignItems:'center'}}>
+          {error}
+        </p>
         <p className="signup-link">
           Don't have an account? <Link to="/signup">Sign up here</Link>
         </p>
