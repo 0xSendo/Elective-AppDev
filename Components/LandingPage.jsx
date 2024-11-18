@@ -38,7 +38,7 @@ const LandingPage = () => {
         display: 'flex', // Apply flexbox
         justifyContent: 'space-between', 
         height: '100vh', 
-        backgroundColor: '#002642', // Set background color for overall container
+        backgroundColor: '#1e203b', // Set background color for overall container
       }}
     >
       {/* Left Section: Text Section */}
