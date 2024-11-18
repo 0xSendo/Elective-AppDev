@@ -23,6 +23,7 @@ import Core from './assets/Exercise/Core';
 import Goal from './assets/Entity/Goal';
 import Progress from './assets/Entity/Progress';
 import WorkoutPlan from './assets/Entity/WorkoutPlan';
+import Recent from './assets/Entity/Recent';
 // import Recent from './assets/Entity/Recent';
 
 const App = () => (
@@ -50,7 +51,7 @@ const App = () => (
       <Route path="/goal" element={<Goal />} />
       <Route path="/progress" element={<Progress />} />
       <Route path="/wp" element={<WorkoutPlan />} />
-      {/* <Route path="/rc" element={<Recent/>}/> */}
+      <Route path="/recent" element={<Recent/>}/>
     </Routes>
   </Router>
 );
