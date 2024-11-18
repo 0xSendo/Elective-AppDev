@@ -1,17 +1,21 @@
-/* LandingPage.css */
 .landing-container {
   font-family: Arial, sans-serif;
   text-align: center;
   color: #f2f2f2; /* Main text color */
+  display: flex;
+  justify-content: space-between;
+  height: 100vh;
+  width: 100%;
 }
 
 .navbar {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 10px 20px;
+  padding: 20px;
   background-color: #002642; /* Header background color */
   border-bottom: 2px solid #ddd;
+  width: 100%; /* Ensure navbar stretches across the screen */
 }
 
 .navbar h1 {
@@ -40,21 +44,22 @@
 }
 
 .hero-section {
-  padding: 105px 22px; /* Vertical padding remains, horizontal padding will be adjusted */
-  width: 100%; /* Stretch to full width of the parent container */
-  box-sizing: border-box; /* Ensures padding is included in the width */
+  padding: 105px 22px;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .hero-section h2 {
   font-size: 2.5rem;
   margin-bottom: 20px;
-  color: #ccff00; /* Hero section heading color */
+  color: #ccff00;
 }
 
 .hero-section p {
   font-size: 1.2rem;
   margin-bottom: 15px;
   line-height: 1.6;
+  color: white;
 }
 
 .hero-image {
@@ -73,13 +78,15 @@
   border-top: 2px solid #ddd;
 }
 
+/* Right-aligned login and sign up buttons */
 .navbar-right {
   position: absolute;
-  top: 10%;
-  right: 10%;
+  top: 2%;  /* Move the buttons higher */
+  right: 20px; /* Keeps buttons aligned to the right */
   display: flex;
   gap: 20px;
 }
+
 
 .navbar-right button {
   padding: 8px 16px;
@@ -89,9 +96,10 @@
   font-size: 1rem;
   background-color: #111111;
   color: #f2f2f2;
+  width: auto; /* Prevents buttons from stretching */
+  white-space: nowrap; /* Prevents buttons from wrapping */
 }
 
 .navbar-right button:hover {
   background-color: #333333;
 }
-
