@@ -1,18 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { loginUser, signUpUser, createProfile } from '../services/apiService';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
 
 const HomePage = () => {
   const navigate = useNavigate();
   // Retrieve user data (assuming this is saved during signup)
-  const storedUser = localStorage.getItem('user');
-  const user = JSON.parse(storedUser) || { name: 'User', email: 'user@example.com' };
+  const user = JSON.parse(localStorage.getItem('user')) || { name: 'User', email: 'user@example.com' };
   // Fetch the user profile from localStorage
   const storedProfile = localStorage.getItem('userProfile');
   const initialProfile = storedProfile
     ? JSON.parse(storedProfile)
-    : { name: '', email: '', password: '', gender: '', fitnessLevel: '', weight: '', height: '', weightGoal: '' };
+    : { fitnessLevel: '', weight: '', height: '', goalWeight: '' };
   const [profile, setProfile] = useState(initialProfile);
   const [editMode, setEditMode] = useState(false);
 
@@ -39,55 +36,41 @@ const HomePage = () => {
     setEditMode(false); // Exit edit mode
   };
 
-  const handleFinish = async (e) => {
-    e.preventDefault();
-      const profileData = {
-            name: profile.name,
-            email: user.email, 
-            password: profile.password,
-            fitnessLevel: profile.fitnessLevel,
-            gender: profile.gender,
-            weight: profile.weight,
-            height: profile.height,
-            weightGoal: profile.weightGoal,
-            id: user.id,
-        };
-
-        // Use the createProfile function from apiService.js to post profile data
-        try {
-          const response = await createProfile(profileData);
-          console.log('Profile saved:', response); // Optional: log the response
-          alert('Profile saved successfully');
-          navigate('/home2'); // Redirect to HomePage2
-        } catch (error) {
-        console.error('Error saving profile:', error);
-        alert('There was an error saving your profile. Please try again.');
-    }
-};
+  const handleFinish = () => {
+    navigate('/home3'); // Redirect to HomePage3
+  };
 
   return (
     <div style={{ textAlign: 'center', marginTop: '50px' }}>
-      <h1>Welcome, {user.name}!</h1>
-      <p>Email: {user.email}</p>
+      {/* <h1>Welcome, {user.name}!</h1>
+      <p>Email: {user.email}</p> */}
       <h2>Your Profile</h2>
       <div>
         <span>Fitness Level: </span>
         {editMode ? (
-          <select
+          <input
+            type="text"
             name="fitnessLevel"
             value={profile.fitnessLevel}
             onChange={handleChange}
-          >
-            <option value="">Select a level</option>
-            <option value="Beginner">Beginner</option>
-            <option value="Intermediate">Intermediate</option>
-            <option value="Advanced">Advanced</option>
-          </select>
+          />
         ) : (
           <span>{profile.fitnessLevel || 'Not set'}</span>
         )}
       </div>
-
+      <div>
+        <span>Gender: </span>
+        {editMode ? (
+          <input
+            type="text"
+            name="gender"
+            value={profile.gender}
+            onChange={handleChange}
+          />
+        ) : (
+          <span>{profile.gender || 'Not set'}</span>
+        )}
+      </div>
       <div>
         <span>Weight: </span>
         {editMode ? (
@@ -119,8 +102,8 @@ const HomePage = () => {
         {editMode ? (
           <input
             type="number"
-            name="weightGoal"
-            value={profile.weightGoal}
+            name="goalWeight"
+            value={profile.goalWeight}
             onChange={handleChange}
           />
         ) : (
