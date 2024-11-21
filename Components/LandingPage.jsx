@@ -38,7 +38,7 @@ const LandingPage = () => {
         display: 'flex', // Apply flexbox
         justifyContent: 'space-between', 
         height: '100vh', 
-        backgroundColor: '#1e203b', // Set background color for overall container
+        backgroundColor: '#010829', // Set background color for overall container
       }}
     >
       {/* Left Section: Text Section */}
@@ -49,6 +49,7 @@ const LandingPage = () => {
           flexDirection: 'column',
           justifyContent: 'center',
           padding: '50px',
+        
         }}
       >
         <header className="navbar">
@@ -90,6 +91,7 @@ const LandingPage = () => {
           backgroundPosition: 'center',
           height: '100vh',
           position: 'relative', // Positioning for absolute elements
+    
         }}
       >
         {/* Log In and Sign Up Buttons on the Right Side */}
