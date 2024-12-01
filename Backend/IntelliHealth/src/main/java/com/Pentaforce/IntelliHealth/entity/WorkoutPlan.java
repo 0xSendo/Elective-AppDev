@@ -5,34 +5,30 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "tblworkoutplan")
-public class WorkoutPlan {
+public class WorkoutPlanEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int planID;
 
-    @ManyToOne
-    @JoinColumn(name = "userID", nullable = false)
-    private UserEntity user;
+    // @ManyToOne
+    // @JoinColumn(name = "userID", nullable = false)
+    // private UserEntity user;
 
-    @Column(nullable = false)
     private int duration;
-
-    @Column(nullable = false)
+ 
+    @Column(name="weekly_goal")
     private String weeklyGoal;
 
     // Constructors
-    public WorkoutPlan() {
+    public WorkoutPlanEntity() {
     }
 
-    public WorkoutPlan(UserEntity user, int duration, String weeklyGoal) {
-        this.user = user;
+    public WorkoutPlanEntity(int duration, String weeklyGoal) {
         this.duration = duration;
         this.weeklyGoal = weeklyGoal;
     }
@@ -46,13 +42,13 @@ public class WorkoutPlan {
         this.planID = planID;
     }
 
-    public UserEntity getUser() {
-        return user;
-    }
+    // public UserEntity getUser() {
+    //     return user;
+    // }
 
-    public void setUser(UserEntity user) {
-        this.user = user;
-    }
+    // public void setUser(UserEntity user) {
+    //     this.user = user;
+    // }
 
     public int getDuration() {
         return duration;
