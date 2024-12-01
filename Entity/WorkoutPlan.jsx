@@ -1,273 +1,272 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Link, useNavigate } from 'react-router-dom';
+import { Button, TextField, Typography, Paper, Box, Stack, Card, Snackbar, Alert, IconButton } from '@mui/material';
+import { Edit, Delete } from '@mui/icons-material';
+import HomeSidebar from '../Components/HomeSidebar';
 
 const WorkoutPlan = () => {
-  const navigate = useNavigate();
-  const [error, setError] = useState('');
+  const [plans, setPlans] = useState([]);
   const [newPlan, setNewPlan] = useState({
     duration: '',
-    weeklygoal: '',
-    userID: 1,
+    weeklyGoal: '',
   });
-  const [plan, setPlan] = useState([]);
   const [editIndex, setEditIndex] = useState(null);
-  const [isModalVisible, setIsModalVisible] = useState(false);
-
-  // Handle Sidebar Modal visibility
-  const toggleProfileModal = () => setIsModalVisible(!isModalVisible);
-
-  // Fetch plans on mount
-  // useEffect(() => {
-  //   const fetchPlans = async () => {
-  //     try {
-  //       const response = await axios.get('http://localhost:8080/api/workoutplans');
-  //       setPlan(response.data);
-  //     } catch (error) {
-  //       console.error('Error fetching plans:', error);
-  //       setError('Failed to fetch.');
-  //     }
-  //   };
-  //   fetchPlans();
-  // }, []);
-
-  // Handle form input changes
- 
-
-  // Add new plan
-  const addPlan = async () => {
-    try {
-      const response = await axios.post('http://localhost:8080/api/workoutplans', newPlan);
-      setPlan((prev) => [...prev, response.data]);
-      setNewPlan({ duration: '', weeklygoal: '', userID: 1 });
-    } catch (error) {
-      console.error('Error creating plan:', error);
-      setError('Failed to create plan');
-    }
-  };
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState('');
 
   const fetchPlans = async () => {
-        try {
-          const response = await axios.get('http://localhost:8080/api/workoutplans');
-          setPlan(response.data);
-        } catch (error) {
-          console.error('Error fetching plans:', error);
-          setError('Failed to fetch.');
-        }
-      };
-
-      React.useEffect(() => {
-        fetchPlans(); // Fetch goals when the component mounts
-      }, []);
-
-
-  // Start editing a plan
-  const startEdit = (index) => {
-    setEditIndex(index);
-    setNewPlan(plan[index]);
-  };
-
-  // Save edited plan
-  const saveEdit = async () => {
     try {
-      const updatedPlan = await axios.put(
-        `http://localhost:8080/api/workoutplans/${plan[editIndex].planID}`,
-        newPlan
-      );
-      const updatedPlans = [...plan];
-      updatedPlans[editIndex] = updatedPlan.data;
-      setPlan(updatedPlans);
-      setEditIndex(null);
-      setNewPlan({ duration: '', weeklygoal: '', userID: 1 });
+      const response = await axios.get('http://localhost:8080/api/workoutplans');
+      console.log('Fetched plans:', response.data); // Log fetched plans
+      setPlans(response.data);
     } catch (error) {
-      console.error('Error updating plan:', error);
-      setError('Failed to update plan');
+      console.error('Error fetching plans:', error);
+      setSnackbarMessage('Failed to fetch workout plans.');
+      setSnackbarOpen(true);
     }
   };
 
-  // Delete plan
-  const deletePlan = async (index) => {
-    try {
-      const planID = plan[index].planID;
-      await axios.delete(`http://localhost:8080/api/workoutplans/${planID}`);
-      setPlan(plan.filter((_, i) => i !== index));
-    } catch (error) {
-      console.error('Error deleting plan:', error);
-      setError('Failed to delete plan');
-    }
-  };
+  useEffect(() => {
+    fetchPlans();
+  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setNewPlan((prev) => ({ ...prev, [name]: value }));
   };
 
-  return (
-    <div className="homepage">
-      {/* Top Navigation Bar */}
-      <header className="top-bar">
-        <nav className="navbar">
-          <div className="logo">
-            <Link to="/">
-              <img
-                src="https://scontent.xx.fbcdn.net/v/t1.15752-9/462636547_890081249996736_3820895762277585098_n.png"
-                alt="Logo"
-                className="logo-image"
-              />
-            </Link>
-          </div>
-          <div className="nav-links">
-            <div
-              className="profile"
-              onMouseEnter={toggleProfileModal}
-              onMouseLeave={toggleProfileModal}
-            >
-              <img
-                src="https://scontent.fmnl13-4.fna.fbcdn.net/v/t39.30808-1/462101278_508801152002813_5193789042383961383_n.jpg"
-                alt="Profile"
-                className="logo-image"
-              />
-              {isModalVisible && (
-                <div className="profile-modal">
-                  <Link to="/settings">
-                    <button className="settings-option">Settings</button>
-                  </Link>
-                  <Link to="/">
-                    <button className="settings-option">Sign Out</button>
-                  </Link>
-                </div>
-              )}
-            </div>
-          </div>
-        </nav>
-      </header>
+  const addPlan = async () => {
+    if (!newPlan.duration || !newPlan.weeklyGoal) {
+      setSnackbarMessage('Please fill out all fields!');
+      setSnackbarOpen(true);
+      return;
+    }
 
-      {/* Main Content */}
-      <div className="content-wrapper">
-        {/* Sidebar */}
-        <div className="sidebar">
-          <div className="features-list">
-            <Link to="/hs"><p>Home</p></Link>
-            <Link to="/goal"><p>Goals</p></Link>
-            <Link to="/progress"><p>Progress</p></Link>
-            <Link to="/wp"><p>Workout Plan</p></Link>
-            <Link to="/home2"><p>Exercise</p></Link>
-          </div>
-        </div>
+    const newPlanData = {
+      duration: newPlan.duration,
+      weeklyGoal: newPlan.weeklyGoal, // Use camelCase (weeklyGoal) to match your backend
+    };
 
-        {/* Goals Content */}
-        <div style={styles.container}>
-          <button onClick={() => navigate('/home2')}>&larr; Back to Home</button>
-          <h2>My Workout Plans</h2>
-
-          {/* Add or Edit Plan Form */}
-          <div style={styles.formContainer}>
-            <input
-              type="text"
-              name="duration"
-              placeholder="Duration"
-              value={newPlan.duration}
-              onChange={handleChange}
-            />
-            <input
-              type="text"
-              name="weeklygoal"
-              placeholder="Goal Target (e.g., 70 kg)"
-              value={newPlan.weeklygoal}
-              onChange={handleChange}
-            />
-            {editIndex !== null ? (
-              <button onClick={saveEdit} style={styles.saveButton}>Save</button>
-            ) : (
-              <button onClick={addPlan} style={styles.addButton}>Add Plan</button>
-            )}
-          </div>
-
-          {/* List of Goals */}
-          <ul style={styles.goalList}>
-            {plan.map((plan, index) => (
-              <li key={plan.planID} style={styles.goalItem}>
-                <div style={styles.goalText}>
-                  <strong>Duration:</strong> {plan.duration} <br />
-                  <strong>Weekly Goal:</strong> {plan.weeklygoal}<br />
-                </div>
-                <div>
-                  <button onClick={() => startEdit(index)} style={styles.editButton}>Edit</button>
-                  <button onClick={() => deletePlan(index)} style={styles.deleteButton}>Delete</button>
-                </div>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </div>
-    </div>
-  );
+    try {
+      const response = await axios.post('http://localhost:8080/api/workoutplans', newPlanData);
+      setPlans((prev) => [...prev, response.data]);
+      setNewPlan({ duration: '', weeklyGoal: '' });
+      setSnackbarMessage('Workout plan added successfully!');
+      setSnackbarOpen(true);
+    } catch (error) {
+      console.error('Error creating plan:', error);
+      setSnackbarMessage('Failed to create workout plan!');
+      setSnackbarOpen(true);
+    }
 };
 
-const styles = {
-  container: {
-    padding: '20px',
-    borderRadius: '10px',
-    backgroundColor: '#f8f8f8',
-    boxShadow: '0px 4px 8px rgba(0,0,0,0.1)',
-    maxWidth: '400px',
-    width: '80%',
-    margin: '20px auto',
-  },
-  formContainer: {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '10px',
-    marginBottom: '20px',
-  },
-  addButton: {
-    padding: '8px 12px',
-    backgroundColor: '#4caf50',
-    color: 'white',
-    border: 'none',
-    borderRadius: '5px',
-    cursor: 'pointer',
-  },
-  saveButton: {
-    padding: '8px 12px',
-    backgroundColor: '#ffa500',
-    color: 'white',
-    border: 'none',
-    borderRadius: '5px',
-    cursor: 'pointer',
-  },
-  goalList: {
-    listStyleType: 'none',
-    padding: 0,
-  },
-  goalItem: {
-    padding: '10px',
-    backgroundColor: '#fff',
-    borderRadius: '5px',
-    marginBottom: '10px',
-    boxShadow: '0px 2px 4px rgba(0,0,0,0.1)',
-    display: 'flex',
-    justifyContent: 'space-between',
-  },
-  goalText: {
-    textAlign: 'left',
-  },
-  editButton: {
-    padding: '5px 8px',
-    backgroundColor: '#ffa500',
-    color: 'white',
-    border: 'none',
-    borderRadius: '5px',
-    cursor: 'pointer',
-  },
-  deleteButton: {
-    padding: '5px 8px',
-    backgroundColor: '#f44336',
-    color: 'white',
-    border: 'none',
-    borderRadius: '5px',
-    cursor: 'pointer',
-  },
+  
+
+  const saveEdit = async () => {
+    if (!newPlan.duration || !newPlan.weeklyGoal) {
+      setSnackbarMessage('Please fill out all fields!');
+      setSnackbarOpen(true);
+      return;
+    }
+
+    try {
+      const response = await axios.put(
+        `http://localhost:8080/api/workoutplans/${plans[editIndex].planID}`,
+        newPlan
+      );
+      console.log("Plan updated:", response.data); // Log the updated plan
+      const updatedPlans = [...plans];
+      updatedPlans[editIndex] = response.data;
+      setPlans(updatedPlans);
+      setEditIndex(null);
+      setNewPlan({ duration: '', weeklyGoal: '' });
+      setSnackbarMessage('Workout plan updated successfully!');
+      setSnackbarOpen(true);
+    } catch (error) {
+      console.error('Error updating plan:', error.response ? error.response.data : error.message);
+      setSnackbarMessage('Failed to update workout plan!');
+      setSnackbarOpen(true);
+    }
+  };
+
+  const handleDelete = async (index) => {
+    const planID = plans[index]?.planID;
+    if (!planID) {
+      console.error("planID not found for deletion");
+      return;
+    }
+  
+    try {
+      console.log("Deleting plan with ID:", planID); // Log the plan ID being deleted
+      const response = await axios.delete(`http://localhost:8080/api/workoutplans/${planID}`);
+      console.log("Plan deleted:", response); // Log the delete response
+  
+      // After deletion, re-fetch the plans from the backend to ensure you're working with the latest data
+      fetchPlans();
+  
+      setSnackbarMessage('Workout plan deleted successfully!');
+      setSnackbarOpen(true);
+    } catch (error) {
+      console.error('Error deleting plan:', error);
+      setSnackbarMessage('Failed to delete workout plan!');
+      setSnackbarOpen(true);
+    }
+  };
+  
+
+  const handleEdit = (index) => {
+    setEditIndex(index);
+    setNewPlan({
+      duration: plans[index].duration,
+      weeklyGoal: plans[index].weeklyGoal,
+    });
+    console.log("Editing plan:", plans[index]); // Log the plan being edited
+  };
+
+  return (
+    <Box display="flex" height="100vh" fontFamily="Roboto, sans-serif" bgcolor="#fff">
+      <HomeSidebar />
+
+      <Box flex={1} display="flex" flexDirection="row" px={10} py={5} bgcolor="#eee" boxShadow='0 4px 8px rgba(0, 0, 0, 0.1)' marginTop="100px" height="80vh" ml={30} >
+        
+        {/* Input Form */}
+        <Box flex={1} mr={4} width={300}>
+          <Typography variant="h4" fontWeight="600" color="#000" align="center" mb={3}>
+            My Workout Plans
+          </Typography>
+
+          <Paper elevation={3} sx={{ p: 3, mb: 4, borderRadius: 2, backgroundColor: '#fff', maxWidth: '700px', minWidth: '300px'}}>
+            <Stack spacing={2}>
+            <TextField
+              name="duration"
+              label="Duration (in minutes)"
+              value={newPlan.duration}
+              onChange={handleChange}
+              fullWidth
+              sx={{
+                '& .MuiInputBase-root': {
+                  '&.Mui-focused': {
+                    borderColor: 'transparent', // Remove focus border color
+                    backgroundColor: 'transparent', // Remove any background color on focus
+                  },
+                },
+              }}
+              />
+              <TextField
+                name="weeklyGoal"
+                label="Weekly Goal"
+                value={newPlan.weeklyGoal}
+                onChange={handleChange}
+                fullWidth
+                multiline
+                rows={4}
+              />
+
+              <Button
+                variant="contained"
+                onClick={editIndex !== null ? saveEdit : addPlan}
+                sx={{ mt: 2, py: 1.5, backgroundColor: '#002366' }}
+              >
+                {editIndex !== null ? 'Save Plan' : 'Add Plan'}
+              </Button>
+            </Stack>
+          </Paper>
+        </Box>
+
+        {/* Workout Plans Display */}
+        <Box width="400px" maxWidth="100%" mt={4}>
+          <Paper elevation={2} sx={{ bgcolor: '#002366', color: '#ffffff', p: 2, borderRadius: 2, height: '100%' }}>
+            <Typography variant="h6" mb={2}>
+              Things to do:
+            </Typography>
+
+            {plans.length > 0 ? (
+              <Stack spacing={2}>
+                {plans.map((plan, index) => (
+                  <Card key={plan.planID} sx={{ bgcolor: '#ffffff', color: '#333', p: 2, borderRadius: 1 }}>
+                    <Typography variant="body1" fontSize="25px" fontWeight="600" color="black">
+                      Duration: {plan.duration}
+                    </Typography>
+                    <Typography variant="body2" fontSize="15px" >
+                      Weekly Goal: {plan.weeklyGoal ? plan.weeklyGoal : 'No goal set'}
+                    </Typography>
+
+                    <IconButton
+                      size="small"
+                      onClick={() => handleEdit(index)}  
+                      disableRipple
+                      sx={{
+                        justifyContent: 'right',
+                        backgroundColor: 'transparent',
+                        '&:hover': {
+                          backgroundColor: 'transparent',
+                          color: 'inherit',
+                        },
+                        '&:active': {
+                          backgroundColor: 'transparent',
+                          boxShadow: 'none',
+                        },
+                        '&:focus-visible': {
+                          outline: 'none',
+                          boxShadow: 'none',
+                        },
+                        '&.MuiIconButton-root': {
+                          padding: 0,
+                          outline: 'none',
+                          boxShadow: 'none',
+                        },
+                      }}
+                    >
+                      <Edit />
+                    </IconButton>
+
+                    <IconButton
+                      size="small"
+                      color="error"
+                      onClick={() => handleDelete(index)} 
+                      disableRipple
+                      sx={{
+                        justifyContent: 'right',
+                        backgroundColor: 'transparent',
+                        '&:hover': {
+                          backgroundColor: 'transparent',
+                          color: 'inherit',
+                        },
+                        '&:active': {
+                          backgroundColor: 'transparent',
+                          boxShadow: 'none',
+                        },
+                        '&:focus-visible': {
+                          outline: 'none',
+                          boxShadow: 'none',
+                        },
+                        '&.MuiIconButton-root': {
+                          padding: 0,
+                          outline: 'none',
+                          boxShadow: 'none',
+                        },
+                      }}
+                    >
+                      <Delete />
+                    </IconButton>
+                  </Card>
+                ))}
+              </Stack>
+            ) : (
+              <Typography variant="body2">No workout plans added yet.</Typography>
+            )}
+          </Paper>
+        </Box>
+      </Box>
+
+      {/* Snackbar */}
+      <Snackbar open={snackbarOpen} autoHideDuration={4000} onClose={() => setSnackbarOpen(false)}>
+        <Alert onClose={() => setSnackbarOpen(false)} severity={snackbarMessage.includes('Failed') ? 'error' : 'success'} sx={{ width: '100%' }}>
+          {snackbarMessage}
+        </Alert>
+      </Snackbar>
+    </Box>
+  );
 };
 
 export default WorkoutPlan;
