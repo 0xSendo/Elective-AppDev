@@ -1,0 +1,190 @@
+/* General styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  overflow: hidden;
+  background-color: #1e203b;
+}
+
+.homepage {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  width: 100vw;
+  font-family: Arial, sans-serif;
+}
+
+/* Sidebar styles */
+.sidebar {
+  margin-top: 60px;
+  padding: 60px;
+  width: 250px;
+  background-color: #f4f4f4;
+  height: calc(100vh - 60px);
+  position: relative;
+}
+
+.profile-section {
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.profile-image {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+}
+
+.profile-name {
+  margin-top: 10px;
+  font-weight: bold;
+}
+
+.features-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.features-list p {
+  margin: 10px 0;
+  cursor: pointer;
+}
+
+/* Main content styles */
+.main-content {
+  flex-grow: 1;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow-y: auto;
+  background-color: #1e203b;
+}
+
+.main-content h2 {
+  margin-bottom: 20px;
+  color: #1e203b;
+}
+
+.workout-plan {
+  display: flex;
+  justify-content: space-between;
+  width: 90%;
+  margin-top: 20px;
+}
+
+.workout-item {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: space-between;
+  width: 220px;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  background-image: url('https://atlasbars.com/cdn/shop/articles/GfUF07rjOOWfqErQsmP2ggSse0wYb90mmjhU8RfKYUeT3sZIC-out-0.png?v=1686145995');
+  background-size: cover;
+  background-position: center;
+  color: white;
+}
+
+.join-button {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  margin-top: 10px;
+  cursor: pointer;
+}
+
+.join-button:hover {
+  background-color: #0056b3;
+}
+
+/* Responsive adjustments */
+.workout-plan {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: flex-start;
+}
+
+.workout-item {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: space-between;
+  width: 215px;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  background-image: url('https://atlasbars.com/cdn/shop/articles/GfUF07rjOOWfqErQsmP2ggSse0wYb90mmjhU8RfKYUeT3sZIC-out-0.png?v=1686145995');
+  background-size: cover;
+  background-position: center;
+  color: white;
+}
+
+.join-button {
+  margin-top: 10px;
+  padding: 6px 12px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.join-button:hover {
+  background-color: #45a049;
+}
+
+/* Optional: Hover effect for workout items */
+.workout-item:hover {
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* Navbar and Modal Styles */
+.top-bar {
+  background-color: #333;
+  color: white;
+  width: 100%;
+  height: 60px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 10;
+}
+
+.content-wrapper {
+  display: flex;
+  margin-top: 60px;
+  height: calc(100vh - 60px);
+}
+
+.logo {
+  padding-left: 20px;
+}
+
+.top-bar .navbar {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  align-items: center;
+}
+
+.profile {
+  color: white;
+  text-align: right;
+  margin-right: 20px;
+}
