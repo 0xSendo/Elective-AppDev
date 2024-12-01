@@ -28,7 +28,7 @@ public class ExerciseService {
     }
 
     // Retrieve an exercise by ID
-    public Optional<ExerciseEntity> getExerciseById(Long exerciseID) {
+    public Optional<ExerciseEntity> getExerciseById(int exerciseID) {  
         return exerciseRepository.findById(exerciseID);
     }
 
@@ -39,7 +39,7 @@ public class ExerciseService {
 
     // Delete an exercise by ID
     @Transactional
-    public void deleteExercise(Long exerciseID) {
-        exerciseRepository.deleteById(exerciseID);
+    public void deleteExercise(int exerciseID) {  
+        exerciseRepository.deleteAll();
     }
 }
