@@ -4,7 +4,6 @@ import com.Pentaforce.IntelliHealth.entity.GoalEntity;
 import com.Pentaforce.IntelliHealth.repository.GoalRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import jakarta.transaction.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -15,7 +14,6 @@ public class GoalService {
     @Autowired
     private GoalRepository goalRepository;
 
-    @Transactional
     public GoalEntity createGoal(GoalEntity goal) {
         return goalRepository.save(goal);
     }
@@ -28,17 +26,16 @@ public class GoalService {
         return goalRepository.findById(goalID);
     }
 
-    @Transactional
     public GoalEntity updateGoal(Integer goalID, GoalEntity goalDetails) {
-        return goalRepository.findById(goalID)
-            .map(goal -> {
-                goal.setType(goalDetails.getType());
-                goal.setTarget(goalDetails.getTarget());
-                goal.setDeadline(goalDetails.getDeadline());
-                goal.setProgress(goalDetails.getProgress());
-                return goalRepository.save(goal);
-            })
-            .orElse(null);
+        Optional<GoalEntity> existingGoal = goalRepository.findById(goalID);
+
+        if (existingGoal.isPresent()) {
+            GoalEntity goal = existingGoal.get();
+            goal.setTarget(goalDetails.getTarget());
+            goal.setDeadline(goalDetails.getDeadline());
+            return goalRepository.save(goal);
+        }
+        return null;
     }
 
     public void deleteGoal(Integer goalID) {
