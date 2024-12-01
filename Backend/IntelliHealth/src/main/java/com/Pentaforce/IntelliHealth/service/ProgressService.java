@@ -1,10 +1,7 @@
 package com.Pentaforce.IntelliHealth.service;
 
 import com.Pentaforce.IntelliHealth.entity.ProgressEntity;
-import com.Pentaforce.IntelliHealth.entity.UserEntity;
-import com.Pentaforce.IntelliHealth.exception.UserNotFoundException;
 import com.Pentaforce.IntelliHealth.repository.ProgressRepository;
-import com.Pentaforce.IntelliHealth.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import jakarta.transaction.Transactional;
@@ -18,24 +15,22 @@ public class ProgressService {
     @Autowired
     private ProgressRepository progressRepository;
 
-    @Autowired
-    private UserRepository userRepository;
-
-    public ProgressEntity createProgress(int userID, ProgressEntity progress) {
-        UserEntity user = userRepository.findById(userID)
-                .orElseThrow(() -> new UserNotFoundException("User not found with ID: " + userID));
-        progress.setUser(user);
+    // Create a new progress entry
+    public ProgressEntity createProgress(ProgressEntity progress) {
         return progressRepository.save(progress);
     }
 
-    public List<ProgressEntity> getProgressByUser(int userID) {
-        return progressRepository.findByUser_UserID(userID);
+    // Get all progress entries
+    public List<ProgressEntity> getAllProgress() {
+        return progressRepository.findAll();
     }
 
+    // Get a specific progress entry by ID
     public Optional<ProgressEntity> getProgressById(int progressID) {
         return progressRepository.findById(progressID);
     }
 
+    // Update a progress entry
     @Transactional
     public ProgressEntity updateProgress(int progressID, ProgressEntity progressDetails) {
         return progressRepository.findById(progressID)
@@ -47,6 +42,7 @@ public class ProgressService {
                 .orElseThrow(() -> new IllegalArgumentException("Progress not found with ID: " + progressID));
     }
 
+    // Delete a progress entry
     public void deleteProgress(int progressID) {
         if (!progressRepository.existsById(progressID)) {
             throw new IllegalArgumentException("Progress not found with ID: " + progressID);
