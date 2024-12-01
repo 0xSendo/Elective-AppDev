@@ -3,9 +3,8 @@ package com.Pentaforce.IntelliHealth.repository;
 import com.Pentaforce.IntelliHealth.entity.ProgressEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import java.util.List;
 
 @Repository
 public interface ProgressRepository extends JpaRepository<ProgressEntity, Integer> {
-    List<ProgressEntity> findByUser_UserID(int userID);
+   
 }
