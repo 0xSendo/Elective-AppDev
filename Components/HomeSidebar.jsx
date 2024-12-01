@@ -1,193 +1,260 @@
 import React, { useState } from 'react';
-import './HomePage2.css';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import {
+  AppBar,
+  Toolbar,
+  IconButton,
+  Avatar,
+  Menu,
+  MenuItem,
+  List,
+  ListItem,
+  Grid,
+  CssBaseline,
+  Box,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  Button
+} from '@mui/material';
+import logo from '../images/logo.png'; // Your logo image
+import logo1 from '../images/wlogo.png';
 
 const HomeSidebar = () => {
-  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [loading, setLoading] = useState(false); // Track loading state
+  const [openDialog, setOpenDialog] = useState(false); // State to manage the dialog visibility
+  const navigate = useNavigate();
 
-  const blog1 = [
-    {
-      name: "Warriors of the Week: Week 4 'NBA Cup' Edition ",
-      gif: "https://cdn.nba.com/teams/uploads/sites/1610612744/2024/11/feat-image_-warrior-of-week-20241112.png",
-      description: "Stephen Curry scored the final 12 points for the Warriors to will them to a 120-117 victory over Klay Thompson and the Dallas Mavericks at Chase Center on Tuesday. Curry's 28-foot step-back 3-pointer with 27.5 seconds left gave the Warriors a four-point lead and his game-sealing free throws capped a season-high 37-point outing."
-    }
-  ];
-  const blog2 = [
-  {
-    name: "Does cycle syncing, planning workouts around periods improve fitness?",
-    gif: "https://images.firstpost.com/uploads/2023/06/woman-2250970_1280.jpg?im=Resize,width=720,aspect=fit,type=normal",
-    description: "According to professional athletes and fitness influencers, timing training around their menstrual cycles offers big benefits. However, experts claim that the research on whether this training routine improves fitness, much alone assists in other areas of life, is too inconsistent to be convincing."
-  }
-];
-  const blog3 = [
-{
-  name: "November Wellness Newsletter",
-    gif: "https://osdblog.osd.wednet.edu/wp-content/uploads/2016/11/wellness-newsletter-november-2016_page_2.jpg",
-    description: "Don’t miss this month’s issue of “Wellness is a Way of Life!” newsletter. The newsletter is provided by the Child Nutrition department as a wellness resource for all employees.."
-}
-  ];
-
-  const handleProfileHover = () => {
-    setIsModalVisible(true);
+  const handleProfileClick = (event) => {
+    setAnchorEl(event.currentTarget);
   };
 
-  const handleProfileLeave = () => {  
-    setIsModalVisible(false);
+  const handleProfileClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleSignOut = () => {
+    setLoading(true); // Show loading effect when sign-out is initiated
+    setTimeout(() => {
+      // Perform sign-out logic (e.g., clearing tokens, user session)
+      setOpenDialog(true); // Open the sign-out confirmation dialog
+      setLoading(false); // Hide loading effect
+    }, 500); // Set the delay for the sign-out process
+  };
+
+  const handleDialogClose = () => {
+    setOpenDialog(false); // Close the sign-out confirmation dialog without signing out
+  };
+
+  const handleConfirmSignOut = () => {
+    // Perform the actual sign-out logic and navigate to login page
+    setOpenDialog(false);
+    navigate('/'); // Redirect to the login or home page
+  };
+
+  const handleNavigationClick = (path) => {
+    setLoading(true); // Show loading icon
+    setTimeout(() => {
+      navigate(path); // Navigate after a short delay
+      setLoading(false); // Hide loading icon
+    }, 500); // Set the delay as per your requirement
+  };
+
+  const handleSettingsClick = () => {
+    setLoading(true); // Show loading effect when navigating to settings
+    setTimeout(() => {
+      navigate('/settings'); // Navigate to settings page after the delay
+      setLoading(false); // Hide loading effect
+    }, 500); // Set the delay for navigation
+  };
+
+  const menuItemStyle = {
+    display: 'flex',
+    alignItems: 'center',
+    padding: '15px 20px',
+    color: 'white',
+    textDecoration: 'none',
+    transition: 'background-color 0.3s',
+    
   };
 
   return (
-    <div className="homepage">
-      {/* Top Navigation Bar */}
-      <header className="top-bar">
-        <nav className="navbar">
-          <div className="logo">
-            {/* Wrap the logo in a Link to navigate to the LandingPage */}
-            <Link to="/">
-              <img
-                src="https://scontent.xx.fbcdn.net/v/t1.15752-9/462636547_890081249996736_3820895762277585098_n.png?stp=dst-png_s480x480&_nc_cat=110&ccb=1-7&_nc_sid=0024fc&_nc_eui2=AeHgTV-uknlkt8YDdrlpB-DyR8gzgLQE6_RHyDOAtATr9F7ESPDV0fXBtCVHQKu0olaG01TjAWutVkVeV1_41Yh4&_nc_ohc=3O6CFrBVI3wQ7kNvgEDLxrs&_nc_ad=z-m&_nc_cid=0&_nc_zt=23&_nc_ht=scontent.xx&oh=03_Q7cD1QH8KH11rsnCF5BbAxgNhmvQ-j4opweORqwdfmT-pPcg-w&oe=675BB6D6" 
-                alt="Logo"
-                className="logo-image" 
-              />
-            </Link>
-          </div>
-          <div className="nav-links">
-            <div
-              className="profile"
-              onMouseEnter={handleProfileHover}
-              onMouseLeave={handleProfileLeave}
-            >
-              <img
-                src="https://scontent.fmnl13-4.fna.fbcdn.net/v/t39.30808-1/462101278_508801152002813_5193789042383961383_n.jpg?stp=dst-jpg_s200x200&_nc_cat=102&ccb=1-7&_nc_sid=0ecb9b&_nc_eui2=AeEMMWbT_fCH4rWX5Q_gCcn4bfDM77yYbHZt8MzvvJhsdtps3NIkm5PrrzjJJ6X399eQTIuBFNEPw3ZIA_nJHQc-&_nc_ohc=ssrwUXqYWNAQ7kNvgFXK6uR&_nc_zt=24&_nc_ht=scontent.fmnl13-3.fna&_nc_gid=AkgPdBFT9xLgVbBueSbj20t&oh=00_AYDeD_7ud1R0mDtzNtPDvQdpIaew4ljY78Dq4hqhpNHOEA&oe=673A3E19"
-                alt="profile"
-                className="logo-image"
-              />
-              {isModalVisible && (
-                <div className="profile-modal">
-                  <Link to="/settings">
-                    <button className="settings-option">Settings</button>
-                  </Link>
-                  <Link to="/">
-                    <button className="settings-option">Sign Out</button>
-                  </Link>
-                </div>
-              )}
+    <>
+      <CssBaseline />
+      <Grid container style={{ height: '100vh', overflow: 'hidden' }}>
+        {/* Header */}
+        <AppBar
+          position="fixed"
+          style={{ backgroundColor: '#021a3a', zIndex: 1201, width: '100%' }}
+        >
+          <Toolbar
+            style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              padding: '0 16px',
+            }}
+          >
+            <img
+              src={logo}
+              alt="Logo"
+              style={{ height: '40px', cursor: 'pointer' }}
+              onClick={() => navigate('/')}
+            />
+            <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+              <IconButton onClick={handleProfileClick}>
+                <Avatar
+                  src="https://scontent.fmnl13-4.fna.fbcdn.net/v/t39.30808-1/462101278_508801152002813_5193789042383961383_n.jpg"
+                  alt="Profile"
+                  style={{ width: '40px', height: '40px' }}
+                />
+              </IconButton>
             </div>
-          </div>
-        </nav>
-      </header>
-  
-      {/* Main content and sidebar wrapper */}
-      <div className="content-wrapper">
-        {/* Sidebar */}
-        <div className="sidebar">
-          <div className="features-list">
-            <Link to="/hs"><p>Home</p></Link>
-            <Link to="/goal"><p>Goals</p></Link>
-            <Link to="/progress"><p>Progress</p></Link>
-            <Link to="/wp"><p>WorkoutPlan</p></Link>
-            <Link to="/home2"><p>Exercise</p></Link>
-            <Link to="/recent"><p>Recent Activity</p></Link>
-          </div>
-        </div>
+          </Toolbar>
+        </AppBar>
 
-        {/* Main Content (add more content here) */}
-        <div className="balance-container">
-        <h2 style={{ marginTop: '40px', marginLeft: '20px' }}>Sports News</h2>
-              {blog1.map((blog1, index) =>(
-                <div key={index} className="exercise-card">
-                <h3>{blog1.name}</h3>
-                <div className="gif-container">
-                  <img src={blog1.gif} alt={`${blog1.name} gif`} />
-                </div>
-                <p>{blog1.description}</p>
-              </div>
-              ))}
-              </div>
+        {/* Profile Menu */}
+        <Menu
+          anchorEl={anchorEl}
+          open={Boolean(anchorEl)}
+          onClose={handleProfileClose}
+        >
+          <MenuItem onClick={handleSettingsClick}>Settings</MenuItem>
+          <MenuItem onClick={handleSignOut}>Sign Out</MenuItem>
+        </Menu>
 
-          <div className="balance-container">
-        <h2 style={{ marginTop: '40px', marginLeft: '20px' }}>Exercise News</h2>
-              {blog2.map((blog2, index) =>(
-                <div key={index} className="exercise-card">
-                <h3>{blog2.name}</h3>
-                <div className="gif-container">
-                  <img src={blog2.gif} alt={`${blog2.name} gif`} />
-                </div>
-                <p>{blog2.description}</p>
-              </div>
-              ))}
-              </div>
-              <div className="balance-container">
-        <h2 style={{ marginTop: '40px', marginLeft: '20px' }}>Food News</h2>
-              {blog3.map((blog3, index) =>(
-                <div key={index} className="exercise-card">
-                <h3>{blog3.name}</h3>
-                <div className="gif-container">
-                  <img src={blog3.gif} alt={`${blog3.name} gif`} />
-                </div>
-                <p>{blog3.description}</p>
-              </div>
-              ))}
-              </div>
-      </div>
-    
+        {/* Sidebar and Main Content */}
+        <Grid container style={{ height: '100%' }}>
+          {/* Sidebar */}
+          <Grid
+            item
+            xs={3}
+            style={{
+              backgroundColor: '#010829',
+              color: 'white',
+              width: '250px',
+              position: 'fixed',
+              top: '64px',
+              left: 0,
+              paddingTop: '20px',
+              overflowY: 'auto',
+              height: 'calc(100vh - 64px)',
+            }}
+          >
+            <List style={{ padding: 0, margin: 0, cursor: 'pointer' }}>
+              <ListItem
+                button
+                style={menuItemStyle}
+                onClick={() => handleNavigationClick('/hm')}
+              >
+                <span style={{ marginRight: '10px' }}>🏠</span> Home
+              </ListItem>
+              <ListItem
+                button
+                style={menuItemStyle}
+                onClick={() => handleNavigationClick('/goal')}
+              >
+                <span style={{ marginRight: '10px' }}>🎯</span> Goals
+              </ListItem>
+              <ListItem
+                button
+                style={menuItemStyle}
+                onClick={() => handleNavigationClick('/progress')}
+              >
+                <span style={{ marginRight: '10px' }}>💪</span> Progress
+              </ListItem>
+              <ListItem
+                button
+                style={menuItemStyle}
+                onClick={() => handleNavigationClick('/wp')}
+              >
+                <span style={{ marginRight: '10px' }}>🗺️</span> Workout Plan
+              </ListItem>
+              <ListItem
+                button
+                style={menuItemStyle}
+                onClick={() => handleNavigationClick('/home2')}
+              >
+                <span style={{ marginRight: '10px' }}>📋</span> Exercise List
+              </ListItem>
+            </List>
+          </Grid>
 
-    <style jsx>{`
-      .balance-container {
-        text-align: center;
-        padding: 20px;
-        color: #2b2d42;
-      }
-      .exercise-card {
-          background-color: #f0f0f0;
-          border-radius: 8px;
-          box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
-          padding: 20px;
-          text-align: justify;
-          transition: transform 0.2s;
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          width: 400px; /* Increased width for larger cards */
-          height: 540px; /* Increased height for better gif visibility */
-        }  
-      .balance-container1 {
-        text-align: center;
-        padding: 20px;
-        color: #2b2d42;
-      }
-      .exercise-card1 {
-          background-color: #f0f0f0;
-          border-radius: 8px;
-          box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
-          padding: 20px;
-          text-align: justify;
-          transition: transform 0.2s;
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          width: 400px; /* Increased width for larger cards */
-          height: 540px; /* Increased height for better gif visibility */
-        }  
-          .balance-container2 {
-        text-align: center;
-        padding: 20px;
-        color: #2b2d42;
-      }
-      .exercise-card2 {
-          background-color: #f0f0f0;
-          border-radius: 8px;
-          box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
-          padding: 20px;
-          text-align: justify;
-          transition: transform 0.2s;
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          width: 400px; /* Increased width for larger cards */
-          height: 540px; /* Increased height for better gif visibility */
-        }
-        `}</style>
-        </div>
+          {/* Main Content */}
+          <Grid
+            item
+            xs={9}
+            style={{
+              marginLeft: '250px',
+              paddingTop: '84px',
+              overflowY: 'auto',
+              height: 'calc(100vh - 84px)',
+            }}
+          >
+            {/* Show loading container if loading is true */}
+            {loading && (
+              <Box
+                style={{
+                  position: 'fixed',
+                  top: 0,
+                  left: 0,
+                  width: '100%',
+                  height: '100%',
+                  backgroundColor: 'rgba(255, 255, 255, 0.7)', // Whitout overlay
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  zIndex: 1200, // To ensure it appears above other content
+                }}
+              >
+                <img
+                  src={logo1}
+                  alt="Loading"
+                  style={{
+                    width: '50px',
+                    height: '50px',
+                    animation: 'rotate 1s linear infinite', // Rotating animation
+                  }}
+                />
+              </Box>
+            )}
+            {/* Content goes here */}
+          </Grid>
+        </Grid>
+      </Grid>
+
+      {/* Sign-out Confirmation Dialog */}
+      <Dialog open={openDialog} onClose={handleDialogClose}>
+        <DialogTitle>Are you sure you want to sign out?</DialogTitle>
+        <DialogContent>
+          <p>Make sure you save any unsaved work before signing out.</p>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleDialogClose} color="primary">
+            Cancel
+          </Button>
+          <Button onClick={handleConfirmSignOut} color="secondary">
+            Sign Out
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      {/* CSS for the rotation animation */}
+      <style>
+        {`
+          @keyframes rotate {
+            0% {
+              transform: rotate(0deg);
+            }
+            100% {
+              transform: rotate(360deg);
+            }
+          }
+        `}
+      </style>
+    </>
   );
 };
 
