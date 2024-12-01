@@ -1,32 +1,32 @@
 package com.Pentaforce.IntelliHealth.entity;
 
 import jakarta.persistence.*;
-import java.util.Date;
+
+import java.time.LocalDate;
 
 @Entity
-@Table(name = "progress")
+@Table(name = "tblprogress")
 public class ProgressEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int progressID;
 
-    @ManyToOne
-    @JoinColumn(name = "userID", nullable = false)
-    private UserEntity user;
-
-    @Temporal(TemporalType.DATE)
-    private Date date;
+    // @ManyToOne
+    // @JoinColumn(name = "userID", nullable = false)
+    //private UserEntity user;
 
     private float weight;
+    private LocalDate date;
 
     // Constructors
-    public ProgressEntity() {}
+    public ProgressEntity() {
 
-    public ProgressEntity(UserEntity user, Date date, float weight) {
-        this.user = user;
-        this.date = date;
+    }
+
+    public ProgressEntity(float weight, LocalDate date) {
         this.weight = weight;
+        this.date = date;
     }
 
     // Getters and Setters
@@ -38,19 +38,19 @@ public class ProgressEntity {
         this.progressID = progressID;
     }
 
-    public UserEntity getUser() {
-        return user;
-    }
+    // public UserEntity getUser() {
+    //     return user;
+    // }
 
-    public void setUser(UserEntity user) {
-        this.user = user;
-    }
+    // public void setUser(UserEntity user) {
+    //     this.user = user;
+    // }
 
-    public Date getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(LocalDate date) {
         this.date = date;
     }
 
