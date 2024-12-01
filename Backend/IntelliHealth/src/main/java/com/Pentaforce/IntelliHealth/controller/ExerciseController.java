@@ -30,8 +30,8 @@ public class ExerciseController {
 
     // Retrieve an exercise by ID
     @GetMapping("/{id}")
-    public ResponseEntity<ExerciseEntity> getExercise(@PathVariable Long id) {
-        Optional<ExerciseEntity> exercise = exerciseService.getExerciseById(id);
+    public ResponseEntity<ExerciseEntity> getExercise(@PathVariable int exerciseID) {  // Changed to int
+        Optional<ExerciseEntity> exercise = exerciseService.getExerciseById(exerciseID);
         return exercise.map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
@@ -44,13 +44,12 @@ public class ExerciseController {
 
     // Update an existing exercise
     @PutMapping("/{id}")
-    public ResponseEntity<ExerciseEntity> updateExercise(@PathVariable Long id, @RequestBody ExerciseEntity exerciseDetails) {
-        Optional<ExerciseEntity> exerciseOptional = exerciseService.getExerciseById(id);
+    public ResponseEntity<ExerciseEntity> updateExercise(@PathVariable int exerciseID, @RequestBody ExerciseEntity exerciseDetails) {  // Changed to int
+        Optional<ExerciseEntity> exerciseOptional = exerciseService.getExerciseById(exerciseID);
         if (exerciseOptional.isPresent()) {
             ExerciseEntity existingExercise = exerciseOptional.get();
             existingExercise.setName(exerciseDetails.getName());
             existingExercise.setDescription(exerciseDetails.getDescription());
-            existingExercise.setVideoURL(exerciseDetails.getVideoURL());
             existingExercise.setCategory(exerciseDetails.getCategory());
 
             ExerciseEntity updatedExercise = exerciseService.saveExercise(existingExercise);
@@ -62,9 +61,9 @@ public class ExerciseController {
 
     // Delete an exercise by ID
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteExercise(@PathVariable Long id) {
-        if (exerciseService.getExerciseById(id).isPresent()) {
-            exerciseService.deleteExercise(id);
+    public ResponseEntity<Void> deleteExercise(@PathVariable int exerciseID) {  // Changed to int
+        if (exerciseService.getExerciseById(exerciseID).isPresent()) {
+            exerciseService.deleteExercise(exerciseID);
             return ResponseEntity.noContent().build();
         } else {
             return ResponseEntity.notFound().build();
