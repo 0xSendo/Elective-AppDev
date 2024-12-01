@@ -6,7 +6,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.Pentaforce.IntelliHealth.entity.WorkoutPlan;
+import com.Pentaforce.IntelliHealth.entity.WorkoutPlanEntity;
 import com.Pentaforce.IntelliHealth.repository.WorkoutPlanRepository;
 
 import jakarta.transaction.Transactional;
@@ -18,28 +18,26 @@ public class WorkoutPlanService {
     private WorkoutPlanRepository workoutPlanRepository;
 
     @Transactional
-    public WorkoutPlan createWorkoutPlan(WorkoutPlan workoutPlan) {
+    public WorkoutPlanEntity createWorkoutPlan(WorkoutPlanEntity workoutPlan) {
         return workoutPlanRepository.save(workoutPlan);
     }
 
-    public List<WorkoutPlan> getAllWorkoutPlans() {
+    public List<WorkoutPlanEntity> getAllWorkoutPlans() {
         return workoutPlanRepository.findAll();
     }
 
-    public Optional<WorkoutPlan> getWorkoutPlanById(Integer planID) {
+    public Optional<WorkoutPlanEntity> getWorkoutPlanById(Integer planID) {
         return workoutPlanRepository.findById(planID);
     }
 
-    @Transactional
-    public WorkoutPlan updateWorkoutPlan(Integer planID, WorkoutPlan workoutPlanDetails) {
-        return workoutPlanRepository.findById(planID)
-            .map(workoutPlan -> {
-                workoutPlan.setDuration(workoutPlanDetails.getDuration());
-                workoutPlan.setWeeklyGoal(workoutPlanDetails.getWeeklyGoal());
-                return workoutPlanRepository.save(workoutPlan);
-            })
-            .orElse(null);
+    public WorkoutPlanEntity updateWorkoutPlan(Integer planID, WorkoutPlanEntity workoutPlan) {
+        workoutPlan.setPlanID(planID);
+        return workoutPlanRepository.save(workoutPlan);
     }
+    
+    public void addWorkoutPlan(WorkoutPlanEntity workoutPlan) {
+        workoutPlanRepository.save(workoutPlan);
+    }    
 
     public void deleteWorkoutPlan(Integer planID) {
         workoutPlanRepository.deleteById(planID);
