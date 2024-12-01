@@ -1,45 +1,54 @@
 package com.Pentaforce.IntelliHealth.entity;
 
-import jakarta.persistence.*;
-import java.util.HashSet;
-import java.util.Set;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "exercises")
+@Table(name = "tblexercises")
 public class ExerciseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long exerciseID;
-
+    private int exerciseID;
+    
+    private String category;
     private String name;
     private String description;
-    private String videoURL;
-    private String category;
-
-
-    @ManyToMany(mappedBy = "exercises")
-    private Set<WorkoutEntity> workouts = new HashSet<>();
+    
+    // @ManyToMany(mappedBy = "exercises")
+    // private Set<WorkoutEntity> workouts = new HashSet<>();
 
     // Constructors
-    public ExerciseEntity() {}
+    public ExerciseEntity() {
 
-    public ExerciseEntity(String name, String description, String videoURL, String category) {
+    }
+
+    public ExerciseEntity(String category, String name, String description) {
+        this.category = category;
         this.name = name;
         this.description = description;
-        this.videoURL = videoURL;
-        this.category = category;
     }
 
     // Getters and Setters
-    public Long getExerciseID() {
+    public int getExerciseID() {
         return exerciseID;
     }
 
-    public void setExerciseID(Long exerciseID) {
+    public void setExerciseID(int exerciseID) {
         this.exerciseID = exerciseID;
     }
 
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+    
     public String getName() {
         return name;
     }
@@ -56,27 +65,4 @@ public class ExerciseEntity {
         this.description = description;
     }
 
-    public String getVideoURL() {
-        return videoURL;
-    }
-
-    public void setVideoURL(String videoURL) {
-        this.videoURL = videoURL;
-    }
-
-    public String getCategory() {
-        return category;
-    }
-
-    public void setCategory(String category) {
-        this.category = category;
-    }
-
-    public Set<WorkoutEntity> getWorkouts() {
-        return workouts;
-    }
-
-    public void setWorkouts(Set<WorkoutEntity> workouts) {
-        this.workouts = workouts;
-    }
 }
