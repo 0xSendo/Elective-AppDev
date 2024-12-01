@@ -1,10 +1,11 @@
 package com.Pentaforce.IntelliHealth.request;
 
 public class LoginRequest {
+
     private String email;
     private String password;
 
-    // Getters and Setters
+    // Getters and setters
     public String getEmail() {
         return email;
     }
