@@ -1,23 +1,36 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import './Cardio.css';
+import {
+  Box,
+  Button,
+  Typography,
+  Card,
+  CardContent,
+  CardMedia,
+  Grid,
+  Modal,
+  TextField,
+  MenuItem,
+  Snackbar,
+  Alert,
+} from '@mui/material';
 
 const Cardio = () => {
   const navigate = useNavigate();
   const [error, setError] = useState('');
   const [newExercise, setNewExercise] = useState({
-    category: 'User chose Cardio',
-    description: '', // feedback
-    name: '', // most favorite exercise
-    videourl: ''
+    category: 'Cardio',
+    description: '',
+    name: '',
   });
 
-  const [userInput, setUserInput] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalContent, setModalContent] = useState('');
-
-  const [userExercises, setUserExercises] = useState([]); //forList
+  const [userExercises, setUserExercises] = useState([]);
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState('');
+  const [snackbarSeverity, setSnackbarSeverity] = useState('success');
 
   const openModal = (content) => {
     setModalContent(content);
@@ -27,21 +40,16 @@ const Cardio = () => {
   const closeModal = () => {
     setIsModalOpen(false);
     setModalContent('');
-    setUserInput('');
-    // Reset the form fields and error message to refresh the modal
     setNewExercise({
-      category: 'User chose Cardio',
+      category: 'Cardio',
       description: '',
       name: '',
-      videourl: ''
     });
     setError('');
   };
 
-  // Function to handle the form submission
   const handleSubmit = async () => {
-    // Check if required fields are filled
-    if (!newExercise.name || !newExercise.description ) {
+    if (!newExercise.name || !newExercise.description) {
       setError('Please fill in all required fields.');
       return;
     }
@@ -50,64 +58,33 @@ const Cardio = () => {
         category: 'Cardio',
         description: newExercise.description,
         name: newExercise.name,
-        videoURL: newExercise.videourl,
       });
       console.log('Feedback submitted successfully:', response.data);
-      console.log(newExercise.videourl);
+      setSnackbarMessage('Feedback submitted successfully!');
+      setSnackbarSeverity('success');
+      setSnackbarOpen(true);
       closeModal();
     } catch (error) {
       console.error('Error submitting feedback:', error);
-      setError('Failed to submit feedback');
+      setSnackbarMessage('Failed to submit feedback');
+      setSnackbarSeverity('error');
+      setSnackbarOpen(true);
     }
   };
 
   const fetchExercises = async () => {
-  try{
-    const response = await axios.get('http://localhost:8080/api/exercises');
-    setUserExercises(response.data);
-  }
-    catch(error){
+    try {
+      const response = await axios.get('http://localhost:8080/api/exercises');
+      setUserExercises(response.data);
+    } catch (error) {
       console.error('Error fetching exercises.', error);
       setError('Failed to fetch exercises');
-}
+    }
   };
-  React.useEffect(() => {
+
+  useEffect(() => {
     fetchExercises();
   }, []);
-
-  const startEditExercise = (index) => {
-    setEditIndex(index);
-    setNewExercise(userExercises[index]);
-  };
-  const saveEditExercise = async () => {
-    try {
-      const response = await axios.put(`http://localhost:8080/api/exercises/${userExercises[editIndex].exerciseID}`, newExercise);
-      const updatedExercise = [...userExercises];
-      updatedExercise[editIndex] = response.data;
-      setUserExercises(updatedExercise);
-      setEditIndex(null);
-      setNewExercise({ category: '', description: '', name:'', videourl:'' });
-    } catch (error) {
-      console.error('Error updating exercise:', error);
-      setError('Failed to update exercise');
-    }
-  };
-
-  const deleteExercise = async (index) => {
-    const exerciseToDelete = userExercises[index];
-    try {
-      await axios.delete(`http://localhost:8080/api/exercises/${exerciseToDelete.exerciseID}`);
-      setUserExercises(userExercises.filter((_, i) => i !== index));
-    } catch (error) {
-      console.error('Error deleting exercises:', error);
-      setError('Failed to delete exercise.');
-    }
-  };
-  // Handle input change for feedback and exercise fields
-  const handleInputChange = (e) => {  
-    setUserInput(e.target.value);
-    setNewExercise({ ...newExercise, [e.target.name]: e.target.value });
-  };
 
   const exercises = [
     { name: 'Jogging', gif: 'https://cdn.pixabay.com/animation/2023/07/01/15/20/15-20-44-805_512.gif', description: 'A steady jog to improve cardiovascular health.' },
@@ -117,111 +94,204 @@ const Cardio = () => {
   ];
 
   return (
-    <div className="cardio-container">
-      <button className="back-button" onClick={() => navigate('/home2')}>
-        &larr; Back to Home
-      </button>
-      <h2>Cardio Exercises</h2>
-      <p style={{ color: 'white' }}>Follow these cardio exercises to improve your endurance and stamina!</p>
-      <div className="exercise-grid">
+    <Box
+      sx={{
+        fontFamily: 'Arial, sans-serif',
+        padding: 4,
+        backgroundColor: '#021a3a',
+        color: '#',
+        width: '100%',
+      }}
+    >
+      <Button
+        variant="contained"
+        onClick={() => navigate('/home2')}
+        sx={{
+          backgroundColor: '#2980b9',
+          color: 'white',
+          mb: 2,
+          width: 120,
+          '&:hover': { backgroundColor: '#00E2FD' },
+        }}
+      >
+        Back
+      </Button>
+
+      <Typography variant="h3" align="center" fontWeight="600" gutterBottom>
+        Cardio Exercises
+      </Typography>
+      <Typography variant="subtitle1" align="center" mb={4} color="white">
+        Follow these cardio exercises to improve your endurance and stamina!
+      </Typography>
+
+      <Grid container spacing={4} justifyContent="center">
         {exercises.map((exercise, index) => (
-          <div key={index} className="exercise-card">
-            <h3>{exercise.name}</h3>
-            <div className="gif-container">
-              <img src={exercise.gif} alt={`${exercise.name} gif`} />
-            </div>
-            <p>{exercise.description}</p>
-          </div>
+          <Grid item xs={12} sm={6} md={3} key={index}>
+            <Card
+              sx={{
+                boxShadow: 3,
+                borderRadius: '15px',
+                padding: 2,
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                textAlign: 'center',
+                transition: 'transform 0.3s ease',
+                '&:hover': { transform: 'scale(1.05)' },
+                height: 450,
+                width: 350,
+              }}
+            >
+              <CardMedia
+                component="img"
+                alt={`${exercise.name} gif`}
+                height="250"
+                image={exercise.gif}
+                sx={{
+                  objectFit: 'cover',
+                  borderRadius: '8px',
+                  mb: 2,
+                }}
+              />
+              <CardContent
+                sx={{
+                  flexGrow: 1,
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'space-between',
+                  backgroundColor: 'white',
+                  color: '#021a3a',
+                  padding: 2,
+                }}
+              >
+                <Typography
+                  variant="h6"
+                  fontWeight="600"
+                  gutterBottom
+                >
+                  {exercise.name}
+                </Typography>
+                <Typography variant="body2">
+                  {exercise.description}
+                </Typography>
+              </CardContent>
+            </Card>
+          </Grid>
         ))}
-      </div>
-        
-      {/* Finish Button */}
-      <div className="modal-container">
-        <button 
-          className="finish-button" 
+      </Grid>
+
+      <Box textAlign="center" mt={4}>
+        <Button
+          variant="contained"
           onClick={() => openModal('Please provide feedback before finishing:')}
+          sx={{
+            backgroundColor: '#2980b9',
+            color: 'white',
+            width: 120,
+            '&:hover': { backgroundColor: '#6aa84f' },
+          }}
         >
           Finish
-        </button>
-        
-        {/* Modal */}
-        {isModalOpen && (
-          <div className="modal-backdrop">
-            <div className="modal">
-              <p>{modalContent}</p>
-              <br />
-              <p style={{color:'black', marginLeft:'10px', display:'flex', alignItems:'center'}}>Category:
-                <h1 style={{color: 'teal', marginLeft:'55px'}}>CARDIO</h1></p>
-              <br />
-              <p style={{color:'black', marginLeft:'10px', display:'flex', alignItems:'center'}}>Feedback:</p>
-              <input
-                type="text"
-                className="modal-input1"
-                value={newExercise.description}
-                onChange={handleInputChange}
-                placeholder="Enter your feedback.."
-                name="description"
-                required
-              />
-              <br />
-               <p style={{color:'black', marginLeft:'10px', marginTop:'10px', display:'flex', alignItems:'center'}}>Most Enjoyed Exercise:</p>
-              <input
-                type="text"
-                className="modal-input2"
-                value={newExercise.name}
-                onChange={handleInputChange}
-                placeholder="Enter the name of exercise.."
-                name="name"
-                required
-              />
-              {error && <span style={{ color: 'red' }}>{error}</span>}
-              <br />
-              <p style={{color:'black', marginLeft:'10px', marginTop:'10px', display:'flex', alignItems:'center'}}>Any Exercise Suggestions?</p>
-              <input
-                type="text"
-                className="modal-input3"
-                value={newExercise.videourl}
-                onChange={handleInputChange}
-                placeholder="Enter video URL"
-                name="videourl"
-                required
-              />
-              <div className="modal-buttons">
-                <br />
-                <button className="submit-button" onClick={handleSubmit}>
-                  Submit
-                </button>
-                <button className="close-button" onClick={closeModal}>
-                  Close
-                </button>
-              </div>
-            </div>
-          </div>
-        )}
-        {/* <ul style={styles.goalList}>
-         */}
+        </Button>
+      </Box>
 
-         {/* <ul>
-            {userExercises.map((exercise, index) => (
-              <li key={index} style={styles.goalItem}>
-                
-                 <div>
-                  <strong>Type:</strong> {exercise.category} <br />
-                  <strong>Goal Weight:</strong> {exercise.description}<br />
-                  <strong>Deadline:</strong> {exercise.name}<br />
-                
-                </div>
-                <div>
-                  
-                  <button onClick={() => startEditExercise(index)} >Edit</button>
-                  <button onClick={() => deleteExercise(index)} >Delete</button>
-                </div>
-              </li>
-            ))}
-          </ul>  */}
-          
-      </div>
-    </div>
+      <Modal open={isModalOpen} onClose={closeModal}>
+        <Box
+          sx={{
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            width: 400,
+            bgcolor: 'background.paper',
+            boxShadow: 24,
+            p: 4,
+            borderRadius: 2,
+            color: 'black',
+          }}
+        >
+          <Typography variant="h6" mb={2}>
+            {modalContent}
+          </Typography>
+
+          <Typography variant="h6" mb={2} color="primary">
+            Category: <strong>Cardio</strong>
+          </Typography>
+
+          {error && (
+            <Typography color="error" variant="body2" mb={2}>
+              {error}
+            </Typography>
+          )}
+
+          <TextField
+            label="Most enjoyed exercise?"
+            fullWidth
+            variant="outlined"
+            select
+            value={newExercise.name}
+            onChange={(e) =>
+              setNewExercise({ ...newExercise, name: e.target.value })
+            }
+            sx={{ mb: 2 }}
+          >
+            <MenuItem value="Jogging">Jogging</MenuItem>
+            <MenuItem value="Walking">Walking</MenuItem>
+            <MenuItem value="Cycling">Cycling</MenuItem>
+            <MenuItem value="Swimming">Swimming</MenuItem>
+          </TextField>
+
+          <TextField
+            label="Share your experience!"
+            fullWidth
+            multiline
+            rows={3}
+            variant="outlined"
+            value={newExercise.description}
+            onChange={(e) =>
+              setNewExercise({ ...newExercise, description: e.target.value })
+            }
+            sx={{ mb: 2 }}
+          />
+          <Box display="flex" justifyContent="space-between" alignItems="center">
+            <Button
+              variant="contained"
+              onClick={handleSubmit}
+              sx={{
+                backgroundColor: '#2980b9',
+                color: 'white',
+                '&:hover': { backgroundColor: '#6aa84f' },
+                mr: 4,
+              }}
+            >
+              Submit
+            </Button>
+            <Button
+              variant="contained"
+              onClick={closeModal}
+              sx={{
+                backgroundColor: '#e74c3c',
+                color: 'white',
+                '&:hover': { backgroundColor: '#c0392b' },
+              }}
+            >
+              Close
+            </Button>
+          </Box>
+        </Box>
+      </Modal>
+
+      <Snackbar
+        open={snackbarOpen}
+        autoHideDuration={3000}
+        onClose={() => setSnackbarOpen(false)}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
+      >
+        <Alert onClose={() => setSnackbarOpen(false)} severity={snackbarSeverity}>
+          {snackbarMessage}
+        </Alert>
+      </Snackbar>
+    </Box>
   );
 };
 
