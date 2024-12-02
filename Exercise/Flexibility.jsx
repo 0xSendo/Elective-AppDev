@@ -1,6 +1,10 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+
+//connection to backend
 import axios from 'axios';
+
+//muis
 import { Box, Button, Typography, Card, CardContent, CardMedia, Grid, Modal, TextField, MenuItem, Snackbar, Alert } from '@mui/material';
 
 const Flexibility = () => {
