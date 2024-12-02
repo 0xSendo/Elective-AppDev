@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+
+//mui
 import {
   Box,
   Button,
@@ -15,6 +16,10 @@ import {
   Snackbar,
   Alert,
 } from '@mui/material';
+
+//connection to backend
+import axios from 'axios';
+
 
 const Cardio = () => {
   const navigate = useNavigate();
