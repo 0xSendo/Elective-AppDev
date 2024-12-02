@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+
+//muis
 import {
   Box,
   Button,
@@ -15,6 +16,9 @@ import {
   Snackbar,
   Alert
 } from '@mui/material';
+
+//connection to backend
+import axios from 'axios';
 
 const Core = () => {
   const navigate = useNavigate();
